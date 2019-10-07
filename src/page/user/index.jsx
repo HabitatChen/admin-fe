@@ -4,6 +4,7 @@ import { Link }   from 'react-router-dom'
 import Pagination from 'util/pagination/index.jsx'
 import User       from 'service/user-service.jsx'
 import MUtil      from 'util/mm.jsx'
+import TableList from "util/tableList/index.jsx"
 
 const _user = new User()
 const _mm   = new MUtil()
@@ -13,7 +14,6 @@ class UserList extends React.Component {
     super(props)
     this.state = {
       pageNum      : 1,
-      firstLoading : true,
       list         : []
     }
   }
@@ -27,11 +27,7 @@ class UserList extends React.Component {
    */
   loadUserList() {
     _user.getUserList(this.state.pageNum).then(res => {
-      this.setState(res, () => {
-        this.setState({
-          firstLoading: false
-        })
-      })
+      this.setState(res)
     }, errMsg => {
       this.setState({
         list: []
@@ -55,47 +51,24 @@ class UserList extends React.Component {
   render() {
     return (
       <div id='page-wrapper'>
-        <PageTitle title="用户管理">
-          <div className="row">
-            <div className="col-md-12">
-              <table className="table table-striped table-border">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>用户名</th>
-                    <th>邮箱</th>
-                    <th>电话</th>
-                    <th>注册时间</th>
-                  </tr>
-                </thead>
-                <tbody>
-                {
-                  this.state.list.length > 0
-                    ? this.state.list.map((user, index) => {
-                      return (
-                        <tr key={index}>
-                          <td>{user.id}</td>
-                          <td>{user.username}</td>
-                          <td>{user.email}</td>
-                          <td>{user.phone}</td>
-                          <td>{new Date(user.createTime).toLocaleString()}</td>
-                        </tr>
-                      )
-                    })
-                    : (
-                      <tr>
-                        <td colSpan='5' className='text-center'>
-                          { this.state.firstLoading ? '正在加载数据...' : ' 没有找到响应的结果~' }
-                        </td>
-                      </tr>
-                    )
-                }
-
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </PageTitle>
+        <PageTitle title="用户管理" />
+        <TableList
+          tableHeads={['ID', '用户名', '邮箱', '电话', '注册时间']}
+        >
+          {
+            this.state.list.map((user, index) => {
+              return (
+                <tr key={index}>
+                  <td>{user.id}</td>
+                  <td>{user.username}</td>
+                  <td>{user.email}</td>
+                  <td>{user.phone}</td>
+                  <td>{new Date(user.createTime).toLocaleString()}</td>
+                </tr>
+              )
+            })
+          }
+        </TableList>
         <Pagination
           current={this.state.pageNum}
           total={this.state.total}

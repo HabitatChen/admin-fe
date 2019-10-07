@@ -1,5 +1,6 @@
 import React from 'react'
 import './index.scss'
+import './modal.scss'
 import SideNav from '../sideNav/index.jsx'
 import TopNav from '../topNav/index.jsx'
 
