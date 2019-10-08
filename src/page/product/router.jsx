@@ -5,6 +5,8 @@ import {BrowserRouter as Router, Route, Switch, Link, Redirect} from "react-rout
 import ProductList from './index/index.jsx'
 import ProductSave from './save.jsx'
 import ProductDetail from './index/detail.jsx'
+import CategoryList from "page/product/category/index.jsx"
+import CategoryAdd from "page/product/category/add.jsx"
 
 class ProductRouter extends React.Component {
   // 构造方法
@@ -20,7 +22,10 @@ class ProductRouter extends React.Component {
         <Route path='/product/index' component={ProductList} />
         <Route path='/product/save/:pid?' component={ProductSave} />
         <Route path='/product/detail/:pid' component={ProductDetail} />
+        <Route path='/product-category/index/:categoryId?' component={CategoryList} />
+        <Route path='/product-category/add' component={CategoryAdd} />
         <Redirect from='/product' to='/product/index' exact />
+        <Redirect from='/product-category' to='/product-category/index' exact />
       </Switch>
     )
   }
